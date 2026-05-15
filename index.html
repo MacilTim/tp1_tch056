@@ -1,22 +1,25 @@
 <!DOCTYPE html>
-<html lang = "en">
+<html lang="fr">
 
 <head>
-    <meta charset = "UTF-8">
-    <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorties culturelles Montréal</title>
-</head>
-<body>
 
-<header>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="page-principale">
+
+<header class="entete-site">
     <h1>Sorties culturelles Montréal</h1>
 </header>
 
-<nav>
+<nav class="zone-filtres">
 
-    <form>
+    <form class="formulaire-filtres">
 
-        <section>
+        <section class="filtre">
 
             <h2>Catégories</h2>
 
@@ -36,7 +39,7 @@
 
         </section>
 
-        <section>
+        <section class="filtre">
 
             <h2>Ville</h2>
 
@@ -53,7 +56,7 @@
 
         </section>
 
-        <section>
+        <section class="filtre">
 
             <h2>Public</h2>
 
@@ -74,93 +77,231 @@
 
 </nav>
 
-<main>
+<main class="contenu-principal">
+
     <h2>Événements</h2>
 
-    <article>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/d/dc/Festival_International_de_Jazz_de_Montr%C3%A9al_2.jpg" alt="Festival International de Jazz de Montréal">
-        <h3>Festival International de Jazz de Montréal</h3>
-        <time datetime="2026-06-25">25 juin 2026</time>
-        <p>Quartier des Spectacles, Montréal</p>
-        <p>La 46e édition avec Diana Krall, Lionel Richie et Melody Gardot sur les scènes du Quartier des Spectacles.</p>
-        <p>Festival</p>
-    </article>
+    <section class="liste-evenements">
 
-    <article>
-        <img src="https://montrealcentreville.ca/wp-content/uploads/2024/06/FrancosdeMontreal2024.jpg" alt="Francos de Montréal">
-        <h3>Francos de Montréal</h3>
-        <time datetime="2026-06-12">12 juin 2026</time>
-        <p>Place des Festivals, Montréal</p>
-        <p>Le plus grand festival de musique francophone avec Orelsan, Cœur de Pirate et Pierre Lapointe.</p>
-        <p>Festival</p>
-    </article>
+        <article class="carte-evenement">
 
-    <article>
-        <img src="https://images.leslibraires.ca/books/9782021562835/front/9782021562835_large.jpg" alt="Collection Torlonia">
-        <h3>Collection Torlonia : chefs-d'œuvre de la sculpture romaine</h3>
-        <time datetime="2026-03-14">14 mars – 19 juillet 2026</time>
-        <p>Musée des beaux-arts de Montréal</p>
-        <p>Première présentation en Amérique du Nord de sculptures romaines antiques de la prestigieuse collection Torlonia.</p>
-        <p>Exposition</p>
-    </article>
+            <a href="evenement.html">
+                <img class="image-evenement"
+                     src="https://upload.wikimedia.org/wikipedia/commons/d/dc/Festival_International_de_Jazz_de_Montr%C3%A9al_2.jpg"
+                     alt="Festival International de Jazz de Montréal">
+            </a>
 
-    <article>
-        <img src="https://applications-media.feverup.com/image/upload/f_auto,w_720,h_720/fever2/plan/photo/5536a9aa-cb8f-11f0-b63c-46a7f40a15f8.jpg" alt="Harry Potter : Visions de la magie">
-        <h3>Harry Potter : Visions de la magie</h3>
-        <time datetime="2026-03-27">Depuis le 27 mars 2026</time>
-        <p>Place Bonaventure, Montréal</p>
-        <p>Une exposition immersive et interactive dans l'univers des sorciers, présentée pour la première fois au Canada.</p>
-        <p>Exposition</p>
-    </article>
+            <h3>Festival International de Jazz de Montréal</h3>
 
-    <article>
-        <img src="https://sorstu.ca/wp-content/uploads/2026/04/new/jpr-grand_662x0.jpg" alt="Juste pour rire">
-        <h3>Juste pour rire Montréal</h3>
-        <time datetime="2026-07-15">15 – 26 juillet 2026</time>
-        <p>Quartier des Spectacles, Montréal</p>
-        <p>L'un des plus grands festivals d'humour au monde avec des spectacles en salle et des shows gratuits en plein air.</p>
-        <p>Festival</p>
-    </article>
+            <time datetime="2026-06-25">
+                25 juin 2026
+            </time>
 
-    <article>
-        <img src="https://upload.wikimedia.org/wikipedia/fr/6/63/Les_Rendez-Vous_Qu%C3%A9bec_Cin%C3%A9ma.png" alt="Rendez-vous Québec Cinéma">
-        <h3>Rendez-vous Québec Cinéma</h3>
-        <time datetime="2026-04-22">22 – 30 avril 2026</time>
-        <p>Cinémathèque québécoise, Montréal</p>
-        <p>Plus de 300 œuvres du cinéma québécois, longs métrages, documentaires et courts métrages avec les cinéastes d'ici.</p>
-        <p>Projection</p>
-    </article>
+            <p>Quartier des Spectacles, Montréal</p>
 
-    <article>
-        <img src="https://images.unsplash.com/photo-1588492885706-b8917f06df77?w=400" alt="Festival Art Souterrain">
-        <h3>Festival Art Souterrain</h3>
-        <time datetime="2026-04-25">25 avril – 10 mai 2026</time>
-        <p>Réseau piétonnier souterrain, centre-ville de Montréal</p>
-        <p>18e édition sous le thème de la dualité : l'art contemporain investit les corridors souterrains du centre-ville.</p>
-        <p>Exposition</p>
-    </article>
+            <p>
+                La 46e édition avec Diana Krall, Lionel Richie et Melody Gardot
+                sur les scènes du Quartier des Spectacles.
+            </p>
 
-    <article>
-        <img src="https://revue.leslibraires.ca/wp-content/uploads/2026/03/MontrealMystere-1200x628-1-1024x536.jpg" alt="Festival Montréal Mystère">
-        <h3>Festival Montréal Mystère</h3>
-        <time datetime="2026-05-29">29 – 30 mai 2026</time>
-        <p>Centre culturel Georges-Vanier, Montréal</p>
-        <p>Plus de 20 auteurs renommés de romans policiers et de thrillers pour des panels, des séances de dédicaces et des activités spéciales.</p>
-        <p>Conférence</p>
-    </article>
+            <p>Festival</p>
 
-    <article>
-        <img src="https://images.radio-canada.ca/q_auto,w_700/v1/ici-info/sports/16x9/50-ans-jeux-olympiques-montreal.jpg" alt="Exposition Jeux olympiques de Montréal 1976">
-        <h3>Exposition : Montréal 1976 – 50 ans après les Jeux</h3>
-        <time datetime="2026-05-11">À partir du 11 mai 2026</time>
-        <p>Musée McCord Stewart, Montréal</p>
-        <p>À l'occasion du 50e anniversaire des Jeux olympiques de 1976, une exposition consacrée à cet événement marquant de l'histoire de Montréal.</p>
-        <p>Exposition</p>
-    </article>
+        </article>
+
+        <article class="carte-evenement">
+
+            <img class="image-evenement"
+                 src="https://www.nouvelleshebdo.com/upload/26/evenements/2023/5/531346/Image1_888x600.jpg"
+                 alt="Francos de Montréal">
+
+            <h3>Francos de Montréal</h3>
+
+            <time datetime="2026-06-12">
+                12 juin 2026
+            </time>
+
+            <p>Quartier des Spectacles, Montréal</p>
+
+            <p>
+                Festival de musique francophone présentant des artistes québécois,
+                canadiens et internationaux.
+            </p>
+
+            <p>Festival</p>
+
+        </article>
+
+        <article class="carte-evenement">
+
+            <img class="image-evenement"
+                 src="https://le-voyage-intuition.com/wp-content/uploads/2017/03/juste-pour-rire.jpg"
+                 alt="Festival Juste pour rire Montréal">
+
+            <h3>Juste pour rire Montréal</h3>
+
+            <time datetime="2026-07-15">
+                15 juillet 2026
+            </time>
+
+            <p>Centre-ville, Montréal</p>
+
+            <p>
+                Festival culturel consacré à l’humour avec des spectacles en salle,
+                des performances extérieures et des animations.
+            </p>
+
+            <p>Festival</p>
+
+        </article>
+
+        <article class="carte-evenement">
+
+            <img class="image-evenement"
+                 src="https://d3d0lqu00lnqvz.cloudfront.net/media/media/3aba2370-a77d-4c09-985f-f9173037b949.jpg"
+                 alt="Exposition au Musée des beaux-arts de Montréal">
+
+            <h3>Exposition au Musée des beaux-arts</h3>
+
+            <time datetime="2026-05-30">
+                30 mai 2026
+            </time>
+
+            <p>Musée des beaux-arts, Montréal</p>
+
+            <p>
+                Exposition artistique regroupant des œuvres modernes et contemporaines
+                accessibles au grand public.
+            </p>
+
+            <p>Exposition</p>
+
+        </article>
+
+        <article class="carte-evenement">
+
+            <img class="image-evenement"
+                 src="https://cdn.placedesarts.com/tranforms/_1007x1280_crop_center-center_none_ns/66715/Maison-symphonique.webp"
+                 alt="Pièce de théâtre à la Place des Arts">
+
+            <h3>Pièce de théâtre à la Place des Arts</h3>
+
+            <time datetime="2026-08-08">
+                8 août 2026
+            </time>
+
+            <p>Place des Arts, Montréal</p>
+
+            <p>
+                Représentation théâtrale présentée dans une grande salle culturelle
+                au cœur du centre-ville.
+            </p>
+
+            <p>Théâtre</p>
+
+        </article>
+
+        <article class="carte-evenement">
+
+            <img class="image-evenement"
+                 src="https://cloudfront-us-east-1.images.arcpublishing.com/bellmediainc/AAJ2HGGDAZDCZUHW4O3VCHZLTI.jpg"
+                 alt="Projection spéciale au Cinéma Impérial">
+
+            <h3>Projection spéciale au Cinéma Impérial</h3>
+
+            <time datetime="2026-09-10">
+                10 septembre 2026
+            </time>
+
+            <p>Cinéma Impérial, Montréal</p>
+
+            <p>
+                Projection d’un film québécois suivie d’une discussion avec des
+                invités du milieu cinématographique.
+            </p>
+
+            <p>Projection</p>
+
+        </article>
+
+        <article class="carte-evenement">
+
+            <img class="image-evenement"
+                 src="https://www.banq.qc.ca/sites/default/files/2022-10/bnq%20juin%2032.jpg"
+                 alt="Conférence à la Grande Bibliothèque">
+
+            <h3>Conférence à la Grande Bibliothèque</h3>
+
+            <time datetime="2026-10-05">
+                5 octobre 2026
+            </time>
+
+            <p>Grande Bibliothèque, Montréal</p>
+
+            <p>
+                Conférence culturelle portant sur la littérature, les arts et
+                l’histoire de Montréal.
+            </p>
+
+            <p>Conférence</p>
+
+        </article>
+
+        <article class="carte-evenement">
+
+            <img class="image-evenement"
+                 src="https://res.cloudinary.com/dqmiqekxl/image/upload/w_1200,h_630,c_auto,f_auto/photos_600_400/cosmodome_1"
+                 alt="Activité familiale au Cosmodôme">
+
+            <h3>Activité familiale au Cosmodôme</h3>
+
+            <time datetime="2026-07-22">
+                22 juillet 2026
+            </time>
+
+            <p>Cosmodôme, Laval</p>
+
+            <p>
+                Activité éducative et interactive pour les familles autour de
+                l’espace, des sciences et de l’exploration.
+            </p>
+
+            <p>Famille</p>
+
+        </article>
+
+        <article class="carte-evenement">
+
+            <img class="image-evenement"
+                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN7CIJJ5tyGwHuLoxgSSExtq-APoRqiBORmg&s"
+                 alt="Concert extérieur à Longueuil">
+
+            <h3>Concert extérieur à Longueuil</h3>
+
+            <time datetime="2026-08-18">
+                18 août 2026
+            </time>
+
+            <p>Parc Michel-Chartrand, Longueuil</p>
+
+            <p>
+                Concert en plein air réunissant des artistes locaux dans une ambiance
+                conviviale et familiale.
+            </p>
+
+            <p>Concert</p>
+
+        </article>
+
+    </section>
+
 </main>
 
-<footer>
-    <p>Travail réalisé par : Patrick Sanjab et Macil Timeridjine</p>
+<footer class="pied-page">
+
+    <p>
+        Travail réalisé par : Patrick Sanjab et Macil Timeridjine
+    </p>
+
 </footer>
 
 </body>
