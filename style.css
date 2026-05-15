@@ -1,0 +1,330 @@
+/* =========================
+   NORMALISATION
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   STYLE GLOBAL
+========================= */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #222;
+    line-height: 1.5;
+}
+
+
+/* =========================
+   STRUCTURE PRINCIPALE
+========================= */
+
+.page-principale,
+.page-detail-evenement {
+
+    display: grid;
+
+    grid-template-areas:
+        "header"
+        "nav"
+        "main"
+        "footer";
+
+    grid-template-rows: auto auto 1fr auto;
+
+    min-height: 100vh;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.entete-site {
+
+    grid-area: header;
+
+    background-color: #111827;
+    color: white;
+
+    padding: 20px;
+
+    text-align: center;
+}
+
+
+/* =========================
+   NAVIGATION / FILTRES
+========================= */
+
+.zone-filtres {
+
+    grid-area: nav;
+
+    background-color: white;
+
+    padding: 20px;
+
+    border-bottom: 1px solid #d1d5db;
+}
+
+.formulaire-filtres {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 20px;
+}
+
+.filtre {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.filtre select {
+
+    padding: 8px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 5px;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.contenu-principal,
+.contenu-evenement {
+
+    grid-area: main;
+
+    padding: 30px;
+}
+
+
+/* =========================
+   LISTE ÉVÉNEMENTS
+========================= */
+
+.liste-evenements {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+    gap: 25px;
+
+    margin-top: 20px;
+}
+
+
+/* =========================
+   CARTES ÉVÉNEMENTS
+========================= */
+
+.carte-evenement {
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    padding-bottom: 15px;
+}
+
+.carte-evenement h3,
+.carte-evenement h4 {
+
+    padding: 15px 15px 10px 15px;
+}
+
+.carte-evenement p,
+.carte-evenement time {
+
+    display: block;
+
+    padding: 0 15px 10px 15px;
+}
+
+
+/* =========================
+   IMAGES ÉVÉNEMENTS
+========================= */
+
+.image-evenement {
+
+    width: 100%;
+
+    height: 220px;
+
+    object-fit: cover;
+}
+
+
+/* =========================
+   PAGE DÉTAIL ÉVÉNEMENT
+========================= */
+
+.detail-evenement {
+
+    background-color: white;
+
+    padding: 30px;
+
+    border-radius: 10px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* =========================
+   IMAGE + INFOS
+========================= */
+
+.zone-principale-evenement {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 30px;
+
+    margin-top: 20px;
+}
+
+
+/* =========================
+   IMAGE PRINCIPALE
+========================= */
+
+.image-principale-evenement {
+
+    width: 100%;
+
+    height: 450px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+}
+
+
+/* =========================
+   INFOS ÉVÉNEMENT
+========================= */
+
+.informations-evenement {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 25px;
+}
+
+
+/* =========================
+   MOTS-CLÉS
+========================= */
+
+.mots-cles-evenement {
+
+    margin-top: 30px;
+}
+
+.liste-mots-cles {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    list-style: none;
+
+    margin-top: 15px;
+}
+
+.liste-mots-cles li {
+
+    background-color: #dbeafe;
+
+    padding: 8px 12px;
+
+    border-radius: 20px;
+}
+
+
+/* =========================
+   ÉVÉNEMENTS SIMILAIRES
+========================= */
+
+.evenements-similaires {
+
+    margin-top: 40px;
+}
+
+.liste-evenements-similaires {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+    gap: 20px;
+
+    margin-top: 20px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.pied-page {
+
+    grid-area: footer;
+
+    background-color: #111827;
+
+    color: white;
+
+    text-align: center;
+
+    padding: 20px;
+
+    margin-top: 40px;
+}
+
+
+/* =========================
+   RESPONSIVE MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .zone-principale-evenement {
+
+        grid-template-columns: 1fr;
+    }
+
+    .formulaire-filtres {
+
+        flex-direction: column;
+    }
+}
