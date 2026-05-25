@@ -34,8 +34,8 @@ body {
 
     grid-area: header;
 
-    background-color: #111827;
-    color: white;
+    background-color: #f1d014;
+    color: rgb(244, 245, 238);
 
     padding: 20px;
 
@@ -46,11 +46,11 @@ body {
 
     grid-area: nav;
 
-    background-color: white;
+    background-color: rgb(234, 232, 195);
 
     padding: 20px;
 
-    border-bottom: 1px solid #d1d5db;
+    border-bottom: 1px solid #e3e2d5;
 }
 
 .formulaire-filtres {
