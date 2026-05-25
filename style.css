@@ -7,7 +7,7 @@
 
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: Trebuchet MS,Arial, sans-serif;
     background-color: #f4f4f4;
     color: #222;
     line-height: 1.5;
@@ -75,7 +75,7 @@ body {
 
     padding: 8px;
 
-    border: 1px solid #ccc;
+    border: 1px solid #faf3db;
 
     border-radius: 5px;
 }
@@ -101,7 +101,7 @@ body {
 
 .carte-evenement {
 
-    background-color: white;
+    background-color: rgb(244, 245, 238);
 
     border-radius: 10px;
 
@@ -137,7 +137,7 @@ body {
 
 .detail-evenement {
 
-    background-color: white;
+    background-color: rgb(244, 245, 238);
 
     padding: 30px;
 
@@ -224,9 +224,9 @@ body {
 
     grid-area: footer;
 
-    background-color: #111827;
+    background-color: #f1d014;
 
-    color: white;
+    color: rgb(244, 245, 238);
 
     text-align: center;
 
