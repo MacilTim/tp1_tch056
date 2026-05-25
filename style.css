@@ -126,6 +126,34 @@ body {
     padding: 0 15px 10px 15px;
 }
 
+.bouton-detail {
+
+    display: inline-block;
+
+    margin: 5px 15px 0 15px;
+
+    padding: 10px 15px;
+
+    background-color: #111827;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.bouton-detail:hover {
+
+    background-color: #374151;
+
+    transform: scale(1.05);
+}
+
 .image-evenement {
 
     width: 100%;
@@ -133,6 +161,20 @@ body {
     height: 220px;
 
     object-fit: cover;
+}
+
+.carte-evenement a .image-evenement {
+
+    cursor: pointer;
+
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.carte-evenement a .image-evenement:hover {
+
+    transform: scale(1.03);
+
+    opacity: 0.9;
 }
 
 .detail-evenement {
