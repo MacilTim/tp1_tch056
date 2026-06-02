@@ -77,4 +77,62 @@ function afficher_evenements(liste_evenements) {
     });
 }
 
+function remplir_select(id_select, texte_defaut, liste_options) {
+    const select = document.getElementById(id_select);
+
+    select.innerHTML = "";
+
+    const option_defaut = document.createElement("option");
+    option_defaut.value = "";
+    option_defaut.textContent = texte_defaut;
+
+    select.appendChild(option_defaut);
+
+    liste_options.forEach(function(option_item) {
+        const option = document.createElement("option");
+
+        option.value = option_item.id;
+        option.textContent = option_item.nom;
+
+        select.appendChild(option);
+    });
+}
+
+function afficher_filtres() {
+    remplir_select("categorie", "Toutes les catégories", categories);
+    remplir_select("ville", "Toutes les villes", villes);
+    remplir_select("public", "Tous les publics", publics);
+}
+
+afficher_filtres();
+
+function filtrer_evenements() {
+    const categorie_selectionnee = document.getElementById("categorie").value;
+    const ville_selectionnee = document.getElementById("ville").value;
+    const public_selectionne = document.getElementById("public").value;
+
+    let evenements_filtres = evenements;
+
+    if (categorie_selectionnee !== "") {
+        evenements_filtres = evenements_filtres.filter(function(evenement) {
+            return evenement.categorie_id === Number(categorie_selectionnee);
+        });
+    }
+
+    if (ville_selectionnee !== "") {
+        evenements_filtres = evenements_filtres.filter(function(evenement) {
+            return evenement.ville_id === Number(ville_selectionnee);
+        });
+    }
+
+    if (public_selectionne !== "") {
+        evenements_filtres = evenements_filtres.filter(function(evenement) {
+            return evenement.public_id === Number(public_selectionne);
+        });
+    }
+
+    afficher_evenements(evenements_filtres);
+}
+
+
 afficher_evenements(evenements);
