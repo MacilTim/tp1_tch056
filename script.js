@@ -155,6 +155,82 @@ function filtrer_evenements() {
     afficher_evenements(evenements_filtres);
 }
 
+function ouvrir_formulaire_ajout() {
+    document.getElementById("panneau-ajout-evenement").hidden = false;
+}
+
+function fermer_formulaire_ajout() {
+    document.getElementById("panneau-ajout-evenement").hidden = true;
+    document.getElementById("formulaire-ajout-evenement").reset();
+}
+
+function remplir_formulaire_ajout() {
+    remplir_select("ville-ajout", "Choisir une ville", villes);
+    remplir_select("categorie-ajout", "Choisir une catégorie", categories);
+    remplir_select("public-ajout", "Choisir un public", publics);
+}
+
+function ajouter_evenement(event) {
+    event.preventDefault();
+
+    const titre = document.getElementById("titre-ajout").value.trim();
+    const image = document.getElementById("image-ajout").value.trim();
+    const description_courte = document.getElementById("description-courte-ajout").value.trim();
+    const description_longue = document.getElementById("description-longue-ajout").value.trim();
+    const date = document.getElementById("date-ajout").value;
+    const heure = document.getElementById("heure-ajout").value;
+    const lieu = document.getElementById("lieu-ajout").value.trim();
+    const adresse = document.getElementById("adresse-ajout").value.trim();
+    const ville_id = Number(document.getElementById("ville-ajout").value);
+    const categorie_id = Number(document.getElementById("categorie-ajout").value);
+    const public_id = Number(document.getElementById("public-ajout").value);
+    const prix = Number(document.getElementById("prix-ajout").value);
+    const lien_externe = document.getElementById("lien-ajout").value.trim();
+
+    if (
+        titre === "" ||
+        image === "" ||
+        description_courte === "" ||
+        description_longue === "" ||
+        date === "" ||
+        heure === "" ||
+        lieu === "" ||
+        adresse === "" ||
+        ville_id === 0 ||
+        categorie_id === 0 ||
+        public_id === 0 ||
+        prix < 0
+    ) {
+        alert("Veuillez remplir correctement tous les champs obligatoires.");
+        return;
+    }
+
+    const nouvel_id = evenements.length + 1;
+
+    const nouvel_evenement = {
+        id: nouvel_id,
+        titre: titre,
+        image: image,
+        description_courte: description_courte,
+        description_longue: description_longue,
+        date: date,
+        heure: heure,
+        lieu: lieu,
+        adresse: adresse,
+        ville_id: ville_id,
+        categorie_id: categorie_id,
+        public_id: public_id,
+        prix: prix,
+        mots_cles_ids: [],
+        lien_externe: lien_externe
+    };
+
+    evenements.push(nouvel_evenement);
+
+    fermer_formulaire_ajout();
+    filtrer_evenements();
+}
+
 afficher_filtres();
 afficher_evenements(evenements);
 
@@ -162,3 +238,9 @@ document.getElementById("categorie").addEventListener("change", filtrer_evenemen
 document.getElementById("ville").addEventListener("change", filtrer_evenements);
 document.getElementById("public").addEventListener("change", filtrer_evenements);
 document.getElementById("tri").addEventListener("change", filtrer_evenements);
+
+remplir_formulaire_ajout();
+
+document.getElementById("bouton-ajouter-evenement").addEventListener("click", ouvrir_formulaire_ajout);
+document.getElementById("bouton-annuler-ajout").addEventListener("click", fermer_formulaire_ajout);
+document.getElementById("formulaire-ajout-evenement").addEventListener("submit", ajouter_evenement);
