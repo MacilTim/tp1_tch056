@@ -28,6 +28,12 @@ function afficher_evenement_resume(evenement) {
     const lien_image = document.createElement("a");
     lien_image.href = "evenement.html?id=" + evenement.id;
 
+    lien_image.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        window.location.href = "evenement.html?id=" + evenement.id;
+    });
+
     const image = document.createElement("img");
     image.classList.add("image-evenement");
     image.src = evenement.image;
@@ -51,10 +57,14 @@ function afficher_evenement_resume(evenement) {
     const categorie_texte = document.createElement("p");
     categorie_texte.textContent = categorie.nom;
 
-    const bouton_detail = document.createElement("a");
+    const bouton_detail = document.createElement("button");
     bouton_detail.classList.add("bouton-detail");
-    bouton_detail.href = "evenement.html?id=" + evenement.id;
+    bouton_detail.type = "button";
     bouton_detail.textContent = "Voir les détails";
+
+    bouton_detail.addEventListener("click", function() {
+        window.location.href = "evenement.html?id=" + evenement.id;
+    });
 
     carte.appendChild(lien_image);
     carte.appendChild(titre);
@@ -104,14 +114,13 @@ function afficher_filtres() {
     remplir_select("public", "Tous les publics", publics);
 }
 
-afficher_filtres();
-
 function filtrer_evenements() {
     const categorie_selectionnee = document.getElementById("categorie").value;
     const ville_selectionnee = document.getElementById("ville").value;
     const public_selectionne = document.getElementById("public").value;
+    const tri_selectionne = document.getElementById("tri").value;
 
-    let evenements_filtres = evenements;
+    let evenements_filtres = evenements.slice();
 
     if (categorie_selectionnee !== "") {
         evenements_filtres = evenements_filtres.filter(function(evenement) {
@@ -131,8 +140,25 @@ function filtrer_evenements() {
         });
     }
 
+    if (tri_selectionne === "date") {
+        evenements_filtres.sort(function(a, b) {
+            return new Date(a.date) - new Date(b.date);
+        });
+    }
+
+    if (tri_selectionne === "prix") {
+        evenements_filtres.sort(function(a, b) {
+            return a.prix - b.prix;
+        });
+    }
+
     afficher_evenements(evenements_filtres);
 }
 
-
+afficher_filtres();
 afficher_evenements(evenements);
+
+document.getElementById("categorie").addEventListener("change", filtrer_evenements);
+document.getElementById("ville").addEventListener("change", filtrer_evenements);
+document.getElementById("public").addEventListener("change", filtrer_evenements);
+document.getElementById("tri").addEventListener("change", filtrer_evenements);
