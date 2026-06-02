@@ -97,6 +97,89 @@
     <section class="liste-evenements" id="liste-evenements">
     </section>
 
+    <section class="detail-evenement" id="panneau-ajout-evenement" hidden>
+
+    <h2>Ajouter un événement</h2>
+
+    <form id="formulaire-ajout-evenement">
+
+        <section class="filtre">
+            <label for="titre-ajout">Titre :</label>
+            <input id="titre-ajout" type="text">
+        </section>
+
+        <section class="filtre">
+            <label for="image-ajout">URL de l'image :</label>
+            <input id="image-ajout" type="url">
+        </section>
+
+        <section class="filtre">
+            <label for="description-courte-ajout">Description courte :</label>
+            <textarea id="description-courte-ajout"></textarea>
+        </section>
+
+        <section class="filtre">
+            <label for="description-longue-ajout">Description longue :</label>
+            <textarea id="description-longue-ajout"></textarea>
+        </section>
+
+        <section class="filtre">
+            <label for="date-ajout">Date :</label>
+            <input id="date-ajout" type="date">
+        </section>
+
+        <section class="filtre">
+            <label for="heure-ajout">Heure :</label>
+            <input id="heure-ajout" type="time">
+        </section>
+
+        <section class="filtre">
+            <label for="lieu-ajout">Lieu :</label>
+            <input id="lieu-ajout" type="text">
+        </section>
+
+        <section class="filtre">
+            <label for="adresse-ajout">Adresse :</label>
+            <input id="adresse-ajout" type="text">
+        </section>
+
+        <section class="filtre">
+            <label for="ville-ajout">Ville :</label>
+            <select id="ville-ajout"></select>
+        </section>
+
+        <section class="filtre">
+            <label for="categorie-ajout">Catégorie :</label>
+            <select id="categorie-ajout"></select>
+        </section>
+
+        <section class="filtre">
+            <label for="public-ajout">Public :</label>
+            <select id="public-ajout"></select>
+        </section>
+
+        <section class="filtre">
+            <label for="prix-ajout">Prix :</label>
+            <input id="prix-ajout" type="number" min="0">
+        </section>
+
+        <section class="filtre">
+            <label for="lien-ajout">Lien externe optionnel :</label>
+            <input id="lien-ajout" type="url">
+        </section>
+
+        <button class="bouton-detail" type="submit">
+            Enregistrer
+        </button>
+
+        <button class="bouton-detail" id="bouton-annuler-ajout" type="button">
+            Annuler
+        </button>
+
+    </form>
+
+</section>
+
 </main>
 
 <footer class="pied-page">
