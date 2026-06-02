@@ -1,3 +1,5 @@
+let evenement_en_modification_id = null;
+
 function trouver_categorie(categorie_id) {
     return categories.find(function(categorie) {
         return categorie.id === categorie_id;
@@ -62,6 +64,24 @@ function afficher_evenement_resume(evenement) {
     bouton_detail.type = "button";
     bouton_detail.textContent = "Voir les détails";
 
+    const bouton_modifier = document.createElement("button");
+    bouton_modifier.classList.add("bouton-detail");
+    bouton_modifier.type = "button";
+    bouton_modifier.textContent = "Modifier";
+    
+    bouton_modifier.addEventListener("click", function() {
+    ouvrir_formulaire_modification(evenement.id);
+});
+
+const bouton_supprimer = document.createElement("button");
+bouton_supprimer.classList.add("bouton-detail");
+bouton_supprimer.type = "button";
+bouton_supprimer.textContent = "Supprimer";
+
+bouton_supprimer.addEventListener("click", function() {
+    supprimer_evenement(evenement.id);
+});
+
     bouton_detail.addEventListener("click", function() {
         window.location.href = "evenement.html?id=" + evenement.id;
     });
@@ -73,6 +93,8 @@ function afficher_evenement_resume(evenement) {
     carte.appendChild(description);
     carte.appendChild(categorie_texte);
     carte.appendChild(bouton_detail);
+    carte.appendChild(bouton_modifier);
+    carte.appendChild(bouton_supprimer);
 
     liste_evenements.appendChild(carte);
 }
@@ -162,6 +184,9 @@ function ouvrir_formulaire_ajout() {
 function fermer_formulaire_ajout() {
     document.getElementById("panneau-ajout-evenement").hidden = true;
     document.getElementById("formulaire-ajout-evenement").reset();
+    document.getElementById("bouton-enregistrer-evenement").textContent = "Enregistrer";
+
+    evenement_en_modification_id = null;
 }
 
 function remplir_formulaire_ajout() {
@@ -229,6 +254,52 @@ function ajouter_evenement(event) {
 
     fermer_formulaire_ajout();
     filtrer_evenements();
+}
+
+function ouvrir_formulaire_modification(id) {
+    const evenement = evenements.find(function(evenement_item) {
+        return evenement_item.id === id;
+    });
+
+    if (!evenement) {
+        return;
+    }
+
+    evenement_en_modification_id = id;
+
+    document.getElementById("panneau-ajout-evenement").hidden = false;
+    document.getElementById("bouton-enregistrer-evenement").textContent = "Modifier";
+
+    document.getElementById("titre-ajout").value = evenement.titre;
+    document.getElementById("image-ajout").value = evenement.image;
+    document.getElementById("description-courte-ajout").value = evenement.description_courte;
+    document.getElementById("description-longue-ajout").value = evenement.description_longue;
+    document.getElementById("date-ajout").value = evenement.date;
+    document.getElementById("heure-ajout").value = evenement.heure;
+    document.getElementById("lieu-ajout").value = evenement.lieu;
+    document.getElementById("adresse-ajout").value = evenement.adresse;
+    document.getElementById("ville-ajout").value = evenement.ville_id;
+    document.getElementById("categorie-ajout").value = evenement.categorie_id;
+    document.getElementById("public-ajout").value = evenement.public_id;
+    document.getElementById("prix-ajout").value = evenement.prix;
+    document.getElementById("lien-ajout").value = evenement.lien_externe;
+}
+
+function supprimer_evenement(id) {
+    const confirmation = confirm("Voulez-vous vraiment supprimer cet événement ?");
+
+    if (!confirmation) {
+        return;
+    }
+
+    const index = evenements.findIndex(function(evenement) {
+        return evenement.id === id;
+    });
+
+    if (index !== -1) {
+        evenements.splice(index, 1);
+        filtrer_evenements();
+    }
 }
 
 afficher_filtres();
