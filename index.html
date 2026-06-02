@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorties culturelles Montréal</title>
 
+    <link rel="stylesheet" href="normalize.css">
     <link rel="stylesheet" href="style.css">
+
+    <script src="data.js" defer></script>
+    <script src="script.js" defer></script>
 </head>
 
 <body class="page-principale">
@@ -17,7 +21,7 @@
 
 <nav class="zone-filtres">
 
-    <form class="formulaire-filtres">
+    <form class="formulaire-filtres" id="formulaire-filtres">
 
         <section class="filtre">
 
@@ -28,13 +32,6 @@
             </label>
 
             <select id="categorie" name="categorie">
-                <option>Toutes les catégories</option>
-                <option>Concert</option>
-                <option>Exposition</option>
-                <option>Festival</option>
-                <option>Théâtre</option>
-                <option>Conférence</option>
-                <option>Projection</option>
             </select>
 
         </section>
@@ -48,10 +45,6 @@
             </label>
 
             <select id="ville" name="ville">
-                <option>Toutes les villes</option>
-                <option>Montréal</option>
-                <option>Laval</option>
-                <option>Longueuil</option>
             </select>
 
         </section>
@@ -65,10 +58,22 @@
             </label>
 
             <select id="public" name="public">
-                <option>Tous les publics</option>
-                <option>Famille</option>
-                <option>Adultes</option>
-                <option>Enfants</option>
+            </select>
+
+        </section>
+
+        <section class="filtre">
+
+            <h2>Tri</h2>
+
+            <label for="tri">
+                Trier les événements :
+            </label>
+
+            <select id="tri" name="tri">
+                <option value="">Aucun tri</option>
+                <option value="date">Date</option>
+                <option value="prix">Prix</option>
             </select>
 
         </section>
@@ -79,223 +84,17 @@
 
 <main class="contenu-principal">
 
-    <h2>Événements</h2>
+    <section class="entete-contenu">
 
-    <section class="liste-evenements">
+        <h2>Événements</h2>
 
-        <article class="carte-evenement">
+        <button class="bouton-detail" id="bouton-ajouter-evenement" type="button">
+            Ajouter un événement
+        </button>
 
-            <a href="evenement.html">
-                <img class="image-evenement"
-                     src="https://upload.wikimedia.org/wikipedia/commons/d/dc/Festival_International_de_Jazz_de_Montr%C3%A9al_2.jpg"
-                     alt="Festival International de Jazz de Montréal">
-            </a>
+    </section>
 
-            <h3>Festival International de Jazz de Montréal</h3>
-
-            <time datetime="2026-06-25">
-                25 juin 2026
-            </time>
-
-            <p>Quartier des Spectacles, Montréal</p>
-
-            <p>
-                La 46e édition avec Diana Krall, Lionel Richie et Melody Gardot
-                sur les scènes du Quartier des Spectacles.
-            </p>
-
-            <p>Festival</p>
-
-            <a class="bouton-detail" href="evenement.html">
-                Voir les détails
-            </a>
-
-        </article>
-
-        <article class="carte-evenement">
-
-            <img class="image-evenement"
-                 src="https://www.nouvelleshebdo.com/upload/26/evenements/2023/5/531346/Image1_888x600.jpg"
-                 alt="Francos de Montréal">
-
-            <h3>Francos de Montréal</h3>
-
-            <time datetime="2026-06-12">
-                12 juin 2026
-            </time>
-
-            <p>Quartier des Spectacles, Montréal</p>
-
-            <p>
-                Festival de musique francophone présentant des artistes québécois,
-                canadiens et internationaux.
-            </p>
-
-            <p>Festival</p>
-
-        </article>
-
-        <article class="carte-evenement">
-
-            <img class="image-evenement"
-                 src="https://le-voyage-intuition.com/wp-content/uploads/2017/03/juste-pour-rire.jpg"
-                 alt="Festival Juste pour rire Montréal">
-
-            <h3>Juste pour rire Montréal</h3>
-
-            <time datetime="2026-07-15">
-                15 juillet 2026
-            </time>
-
-            <p>Centre-ville, Montréal</p>
-
-            <p>
-                Festival culturel consacré à l’humour avec des spectacles en salle,
-                des performances extérieures et des animations.
-            </p>
-
-            <p>Festival</p>
-
-        </article>
-
-        <article class="carte-evenement">
-
-            <img class="image-evenement"
-                 src="https://d3d0lqu00lnqvz.cloudfront.net/media/media/3aba2370-a77d-4c09-985f-f9173037b949.jpg"
-                 alt="Exposition au Musée des beaux-arts de Montréal">
-
-            <h3>Exposition au Musée des beaux-arts</h3>
-
-            <time datetime="2026-05-30">
-                30 mai 2026
-            </time>
-
-            <p>Musée des beaux-arts, Montréal</p>
-
-            <p>
-                Exposition artistique regroupant des œuvres modernes et contemporaines
-                accessibles au grand public.
-            </p>
-
-            <p>Exposition</p>
-
-        </article>
-
-        <article class="carte-evenement">
-
-            <img class="image-evenement"
-                 src="https://cdn.placedesarts.com/tranforms/_1007x1280_crop_center-center_none_ns/66715/Maison-symphonique.webp"
-                 alt="Pièce de théâtre à la Place des Arts">
-
-            <h3>Pièce de théâtre à la Place des Arts</h3>
-
-            <time datetime="2026-08-08">
-                8 août 2026
-            </time>
-
-            <p>Place des Arts, Montréal</p>
-
-            <p>
-                Représentation théâtrale présentée dans une grande salle culturelle
-                au cœur du centre-ville.
-            </p>
-
-            <p>Théâtre</p>
-
-        </article>
-
-        <article class="carte-evenement">
-
-            <img class="image-evenement"
-                 src="https://cloudfront-us-east-1.images.arcpublishing.com/bellmediainc/AAJ2HGGDAZDCZUHW4O3VCHZLTI.jpg"
-                 alt="Projection spéciale au Cinéma Impérial">
-
-            <h3>Projection spéciale au Cinéma Impérial</h3>
-
-            <time datetime="2026-09-10">
-                10 septembre 2026
-            </time>
-
-            <p>Cinéma Impérial, Montréal</p>
-
-            <p>
-                Projection d’un film québécois suivie d’une discussion avec des
-                invités du milieu cinématographique.
-            </p>
-
-            <p>Projection</p>
-
-        </article>
-
-        <article class="carte-evenement">
-
-            <img class="image-evenement"
-                 src="https://www.banq.qc.ca/sites/default/files/2022-10/bnq%20juin%2032.jpg"
-                 alt="Conférence à la Grande Bibliothèque">
-
-            <h3>Conférence à la Grande Bibliothèque</h3>
-
-            <time datetime="2026-10-05">
-                5 octobre 2026
-            </time>
-
-            <p>Grande Bibliothèque, Montréal</p>
-
-            <p>
-                Conférence culturelle portant sur la littérature, les arts et
-                l’histoire de Montréal.
-            </p>
-
-            <p>Conférence</p>
-
-        </article>
-
-        <article class="carte-evenement">
-
-            <img class="image-evenement"
-                 src="https://res.cloudinary.com/dqmiqekxl/image/upload/w_1200,h_630,c_auto,f_auto/photos_600_400/cosmodome_1"
-                 alt="Activité familiale au Cosmodôme">
-
-            <h3>Activité familiale au Cosmodôme</h3>
-
-            <time datetime="2026-07-22">
-                22 juillet 2026
-            </time>
-
-            <p>Cosmodôme, Laval</p>
-
-            <p>
-                Activité éducative et interactive pour les familles autour de
-                l’espace, des sciences et de l’exploration.
-            </p>
-
-            <p>Famille</p>
-
-        </article>
-
-        <article class="carte-evenement">
-
-            <img class="image-evenement"
-                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN7CIJJ5tyGwHuLoxgSSExtq-APoRqiBORmg&s"
-                 alt="Concert extérieur à Longueuil">
-
-            <h3>Concert extérieur à Longueuil</h3>
-
-            <time datetime="2026-08-18">
-                18 août 2026
-            </time>
-
-            <p>Parc Michel-Chartrand, Longueuil</p>
-
-            <p>
-                Concert en plein air réunissant des artistes locaux dans une ambiance
-                conviviale et familiale.
-            </p>
-
-            <p>Concert</p>
-
-        </article>
-
+    <section class="liste-evenements" id="liste-evenements">
     </section>
 
 </main>
