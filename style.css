@@ -289,3 +289,43 @@ body {
         flex-direction: column;
     }
 }
+
+.entete-site {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.nav-utilisateur {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.9rem;
+}
+
+.nav-utilisateur span {
+    color: rgb(244, 245, 238);
+}
+
+.message-erreur {
+    color: #b91c1c;
+    background-color: #fee2e2;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.message-succes {
+    color: #166534;
+    background-color: #dcfce7;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.liste-erreurs {
+    list-style: none;
+    margin-bottom: 15px;
+}
