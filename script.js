@@ -373,9 +373,19 @@ function remplir_mots_cles_formulaire() {
 }
 
 afficher_filtres();
-afficher_evenements(evenements);
 remplir_formulaire_ajout();
 remplir_mots_cles_formulaire();
+
+fetch('api_evenements.php')
+    .then(function(reponse) {
+        return reponse.json();
+    })
+    .then(function(donnees) {
+        donnees.forEach(function(ev) {
+            evenements.push(ev);
+        });
+        afficher_evenements(evenements);
+    });
 
 document.getElementById("categorie").addEventListener("change", filtrer_evenements);
 document.getElementById("ville").addEventListener("change", filtrer_evenements);
