@@ -28,11 +28,11 @@ function afficher_evenement_resume(evenement) {
     carte.classList.add("carte-evenement");
 
     const lien_image = document.createElement("a");
-    lien_image.href = "evenement.html?id=" + evenement.id;
+    lien_image.href = "evenement.php?id=" + evenement.id;
 
     lien_image.addEventListener("click", function(event) {
         event.preventDefault();
-        window.location.href = "evenement.html?id=" + evenement.id;
+        window.location.href = "evenement.php?id=" + evenement.id;
     });
 
     const image = document.createElement("img");
@@ -64,25 +64,7 @@ function afficher_evenement_resume(evenement) {
     bouton_detail.textContent = "Voir les détails";
 
     bouton_detail.addEventListener("click", function() {
-        window.location.href = "evenement.html?id=" + evenement.id;
-    });
-
-    const bouton_modifier = document.createElement("button");
-    bouton_modifier.classList.add("bouton-detail");
-    bouton_modifier.type = "button";
-    bouton_modifier.textContent = "Modifier";
-
-    bouton_modifier.addEventListener("click", function() {
-        ouvrir_formulaire_modification(evenement.id);
-    });
-
-    const bouton_supprimer = document.createElement("button");
-    bouton_supprimer.classList.add("bouton-detail");
-    bouton_supprimer.type = "button";
-    bouton_supprimer.textContent = "Supprimer";
-
-    bouton_supprimer.addEventListener("click", function() {
-        supprimer_evenement(evenement.id);
+        window.location.href = "evenement.php?id=" + evenement.id;
     });
 
     carte.appendChild(lien_image);
@@ -92,8 +74,30 @@ function afficher_evenement_resume(evenement) {
     carte.appendChild(description);
     carte.appendChild(categorie_texte);
     carte.appendChild(bouton_detail);
-    carte.appendChild(bouton_modifier);
-    carte.appendChild(bouton_supprimer);
+
+    if (typeof EST_ADMIN !== 'undefined' && EST_ADMIN) {
+
+        const bouton_modifier = document.createElement("button");
+        bouton_modifier.classList.add("bouton-detail");
+        bouton_modifier.type = "button";
+        bouton_modifier.textContent = "Modifier";
+
+        bouton_modifier.addEventListener("click", function() {
+            ouvrir_formulaire_modification(evenement.id);
+        });
+
+        const bouton_supprimer = document.createElement("button");
+        bouton_supprimer.classList.add("bouton-detail");
+        bouton_supprimer.type = "button";
+        bouton_supprimer.textContent = "Supprimer";
+
+        bouton_supprimer.addEventListener("click", function() {
+            supprimer_evenement(evenement.id);
+        });
+
+        carte.appendChild(bouton_modifier);
+        carte.appendChild(bouton_supprimer);
+    }
 
     liste_evenements.appendChild(carte);
 }
@@ -347,6 +351,10 @@ function supprimer_evenement(id) {
 function remplir_mots_cles_formulaire() {
     const conteneur = document.getElementById("liste-mots-cles-ajout");
 
+    if (!conteneur) {
+        return;
+    }
+
     conteneur.innerHTML = "";
 
     mots_cles.forEach(function(mot_cle) {
@@ -374,6 +382,17 @@ document.getElementById("ville").addEventListener("change", filtrer_evenements);
 document.getElementById("public").addEventListener("change", filtrer_evenements);
 document.getElementById("tri").addEventListener("change", filtrer_evenements);
 
-document.getElementById("bouton-ajouter-evenement").addEventListener("click", ouvrir_formulaire_ajout);
-document.getElementById("bouton-annuler-ajout").addEventListener("click", fermer_formulaire_ajout);
-document.getElementById("formulaire-ajout-evenement").addEventListener("submit", ajouter_evenement);
+const bouton_ajouter = document.getElementById("bouton-ajouter-evenement");
+if (bouton_ajouter) {
+    bouton_ajouter.addEventListener("click", ouvrir_formulaire_ajout);
+}
+
+const bouton_annuler = document.getElementById("bouton-annuler-ajout");
+if (bouton_annuler) {
+    bouton_annuler.addEventListener("click", fermer_formulaire_ajout);
+}
+
+const formulaire_ajout = document.getElementById("formulaire-ajout-evenement");
+if (formulaire_ajout) {
+    formulaire_ajout.addEventListener("submit", ajouter_evenement);
+}
