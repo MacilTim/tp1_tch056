@@ -98,7 +98,7 @@ function afficher_evenements_similaires(evenement) {
         bouton_detail.textContent = "Voir les détails";
 
         bouton_detail.addEventListener("click", function() {
-            window.location.href = "evenement.html?id=" + evenement_similaire.id;
+            window.location.href = "evenement.php?id=" + evenement_similaire.id;
         });
 
         carte.appendChild(titre);
