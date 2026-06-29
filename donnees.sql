@@ -1,3 +1,60 @@
+CREATE TABLE IF NOT EXISTS categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS villes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS publics (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS mots_cles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS usagers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    prenom VARCHAR(100) NOT NULL,
+    nom_utilisateur VARCHAR(100) NOT NULL UNIQUE,
+    mot_de_passe VARCHAR(255) NOT NULL,
+    type_usager ENUM('regulier', 'admin') NOT NULL DEFAULT 'regulier'
+);
+
+CREATE TABLE IF NOT EXISTS evenements (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titre VARCHAR(255) NOT NULL,
+    image_url TEXT NOT NULL,
+    description_courte TEXT NOT NULL,
+    description_longue TEXT NOT NULL,
+    date_evenement DATETIME NOT NULL,
+    lieu VARCHAR(255) NOT NULL,
+    adresse VARCHAR(255) NOT NULL,
+    ville_id INT NOT NULL,
+    categorie_id INT NOT NULL,
+    public_id INT NOT NULL,
+    prix DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    accessible BOOLEAN NOT NULL DEFAULT FALSE,
+    lien_externe TEXT NULL,
+    FOREIGN KEY (ville_id) REFERENCES villes(id),
+    FOREIGN KEY (categorie_id) REFERENCES categories(id),
+    FOREIGN KEY (public_id) REFERENCES publics(id)
+);
+
+CREATE TABLE IF NOT EXISTS evenements_mots_cles (
+    evenement_id INT NOT NULL,
+    mot_cle_id INT NOT NULL,
+    PRIMARY KEY (evenement_id, mot_cle_id),
+    FOREIGN KEY (evenement_id) REFERENCES evenements(id) ON DELETE CASCADE,
+    FOREIGN KEY (mot_cle_id) REFERENCES mots_cles(id) ON DELETE CASCADE
+);
+
 INSERT INTO categories (nom) VALUES
                                  ('Concert'),
                                  ('Exposition'),
