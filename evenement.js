@@ -1,3 +1,25 @@
+function normaliser_evenement(evenement) {
+    evenement.id = Number(evenement.id);
+    evenement.ville_id = Number(evenement.ville_id);
+    evenement.categorie_id = Number(evenement.categorie_id);
+    evenement.public_id = Number(evenement.public_id);
+    evenement.prix = Number(evenement.prix);
+
+    if (evenement.lien_externe === null) {
+        evenement.lien_externe = "";
+    }
+
+    if (!Array.isArray(evenement.mots_cles_ids)) {
+        evenement.mots_cles_ids = [];
+    }
+
+    evenement.mots_cles_ids = evenement.mots_cles_ids.map(function(id) {
+        return Number(id);
+    });
+
+    return evenement;
+}
+
 function trouver_evenement(id) {
     return evenements.find(function(evenement) {
         return evenement.id === id;
@@ -8,7 +30,7 @@ function trouver_categorie(categorie_id) {
     return categories.find(function(categorie) {
         return categorie.id === categorie_id;
     });
-
+}
 
 function trouver_ville(ville_id) {
     return villes.find(function(ville) {
@@ -58,10 +80,10 @@ function afficher_details_evenement(evenement) {
         "<p><strong>Date :</strong> <time datetime=\"" + evenement.date + "\">" + evenement.date + " à " + evenement.heure + "</time></p>" +
         "<p><strong>Lieu :</strong> " + evenement.lieu + "</p>" +
         "<p><strong>Adresse :</strong> " + evenement.adresse + "</p>" +
-        "<p><strong>Ville :</strong> " + ville.nom + "</p>" +
+        "<p><strong>Ville :</strong> " + (ville ? ville.nom : "") + "</p>" +
         "<p><strong>Prix :</strong> " + evenement.prix + " $</p>" +
-        "<p><strong>Catégorie :</strong> " + categorie.nom + "</p>" +
-        "<p><strong>Public visé :</strong> " + public_vise.nom + "</p>";
+        "<p><strong>Catégorie :</strong> " + (categorie ? categorie.nom : "") + "</p>" +
+        "<p><strong>Public visé :</strong> " + (public_vise ? public_vise.nom : "") + "</p>";
 
     if (evenement.lien_externe !== "") {
         details_evenement.innerHTML +=
@@ -133,19 +155,38 @@ function afficher_evenement(evenement) {
     afficher_evenements_similaires(evenement);
 }
 
+function afficher_evenement_introuvable() {
+    const contenu = document.querySelector(".detail-evenement");
+
+    contenu.innerHTML = "<h2>Événement introuvable</h2><p>Aucun événement ne correspond à cet identifiant.</p>";
+}
+
 function charger_page_evenement() {
     const parametres = new URLSearchParams(window.location.search);
     const id = Number(parametres.get("id"));
 
-    const evenement = trouver_evenement(id);
+    fetch("api_evenements.php")
+        .then(function(reponse) {
+            return reponse.json();
+        })
+        .then(function(donnees) {
+            evenements.length = 0;
 
-    if (evenement) {
-        afficher_evenement(evenement);
-    } else {
-        const contenu = document.querySelector(".detail-evenement");
+            donnees.forEach(function(evenement) {
+                evenements.push(normaliser_evenement(evenement));
+            });
 
-        contenu.innerHTML = "<h2>Événement introuvable</h2><p>Aucun événement ne correspond à cet identifiant.</p>";
-    }
+            const evenement = trouver_evenement(id);
+
+            if (evenement) {
+                afficher_evenement(evenement);
+            } else {
+                afficher_evenement_introuvable();
+            }
+        })
+        .catch(function() {
+            afficher_evenement_introuvable();
+        });
 }
 
 charger_page_evenement();

@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   web:
     build: .
@@ -11,7 +12,6 @@ services:
 
   db:
     image: mariadb:latest
-    command: --default-authentication-plugin=mysql_native_password
     restart: always
     ports:
       - "3306:3306"
@@ -22,6 +22,7 @@ services:
       MYSQL_PASSWORD: password
     volumes:
       - dbdata:/var/lib/mysql
+      - ./donnees.sql:/docker-entrypoint-initdb.d/donnees.sql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
