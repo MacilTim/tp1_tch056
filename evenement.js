@@ -8,7 +8,7 @@ function trouver_categorie(categorie_id) {
     return categories.find(function(categorie) {
         return categorie.id === categorie_id;
     });
-}
+
 
 function trouver_ville(ville_id) {
     return villes.find(function(ville) {
