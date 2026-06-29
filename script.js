@@ -1,5 +1,43 @@
 let evenement_en_modification_id = null;
 
+function normaliser_evenement(evenement) {
+    if (evenement.date_evenement && !evenement.date) {
+        const parties = evenement.date_evenement.split(" ");
+
+        evenement.date = parties[0];
+
+        if (parties[1]) {
+            evenement.heure = parties[1].substring(0, 5);
+        } else {
+            evenement.heure = "";
+        }
+    }
+
+    if (!evenement.heure) {
+        evenement.heure = "";
+    }
+
+    if (evenement.lien_externe === null) {
+        evenement.lien_externe = "";
+    }
+
+    evenement.id = Number(evenement.id);
+    evenement.ville_id = Number(evenement.ville_id);
+    evenement.categorie_id = Number(evenement.categorie_id);
+    evenement.public_id = Number(evenement.public_id);
+    evenement.prix = Number(evenement.prix);
+
+    if (!Array.isArray(evenement.mots_cles_ids)) {
+        evenement.mots_cles_ids = [];
+    }
+
+    evenement.mots_cles_ids = evenement.mots_cles_ids.map(function(id) {
+        return Number(id);
+    });
+
+    return evenement;
+}
+
 function trouver_categorie(categorie_id) {
     return categories.find(function(categorie) {
         return categorie.id === categorie_id;
@@ -50,13 +88,13 @@ function afficher_evenement_resume(evenement) {
     date.textContent = evenement.date + " à " + evenement.heure;
 
     const lieu = document.createElement("p");
-    lieu.textContent = evenement.lieu + ", " + ville.nom;
+    lieu.textContent = evenement.lieu + ", " + (ville ? ville.nom : "");
 
     const description = document.createElement("p");
     description.textContent = evenement.description_courte;
 
     const categorie_texte = document.createElement("p");
-    categorie_texte.textContent = categorie.nom;
+    categorie_texte.textContent = categorie ? categorie.nom : "";
 
     const bouton_detail = document.createElement("button");
     bouton_detail.classList.add("bouton-detail");
@@ -75,8 +113,7 @@ function afficher_evenement_resume(evenement) {
     carte.appendChild(categorie_texte);
     carte.appendChild(bouton_detail);
 
-    if (typeof EST_ADMIN !== 'undefined' && EST_ADMIN) {
-
+    if (typeof EST_ADMIN !== "undefined" && EST_ADMIN) {
         const bouton_modifier = document.createElement("button");
         bouton_modifier.classList.add("bouton-detail");
         bouton_modifier.type = "button";
@@ -114,6 +151,10 @@ function afficher_evenements(liste_evenements) {
 
 function remplir_select(id_select, texte_defaut, liste_options) {
     const select = document.getElementById(id_select);
+
+    if (!select) {
+        return;
+    }
 
     select.innerHTML = "";
 
@@ -167,7 +208,7 @@ function filtrer_evenements() {
 
     if (tri_selectionne === "date") {
         evenements_filtres.sort(function(a, b) {
-            return new Date(a.date) - new Date(b.date);
+            return new Date(a.date + "T" + a.heure) - new Date(b.date + "T" + b.heure);
         });
     }
 
@@ -183,20 +224,36 @@ function filtrer_evenements() {
 function ouvrir_formulaire_ajout() {
     evenement_en_modification_id = null;
 
-    document.getElementById("formulaire-ajout-evenement").reset();
-    document.getElementById("bouton-enregistrer-evenement").textContent = "Enregistrer";
+    const formulaire = document.getElementById("formulaire-ajout-evenement");
+    const bouton = document.getElementById("bouton-enregistrer-evenement");
+    const panneau = document.getElementById("panneau-ajout-evenement");
+
+    if (!formulaire || !bouton || !panneau) {
+        return;
+    }
+
+    formulaire.reset();
+    bouton.textContent = "Enregistrer";
 
     document.querySelectorAll("input[name='mots-cles-ajout']").forEach(function(case_mot_cle) {
         case_mot_cle.checked = false;
     });
 
-    document.getElementById("panneau-ajout-evenement").hidden = false;
+    panneau.hidden = false;
 }
 
 function fermer_formulaire_ajout() {
-    document.getElementById("panneau-ajout-evenement").hidden = true;
-    document.getElementById("formulaire-ajout-evenement").reset();
-    document.getElementById("bouton-enregistrer-evenement").textContent = "Enregistrer";
+    const formulaire = document.getElementById("formulaire-ajout-evenement");
+    const bouton = document.getElementById("bouton-enregistrer-evenement");
+    const panneau = document.getElementById("panneau-ajout-evenement");
+
+    if (!formulaire || !bouton || !panneau) {
+        return;
+    }
+
+    panneau.hidden = true;
+    formulaire.reset();
+    bouton.textContent = "Enregistrer";
 
     document.querySelectorAll("input[name='mots-cles-ajout']").forEach(function(case_mot_cle) {
         case_mot_cle.checked = false;
@@ -376,14 +433,20 @@ afficher_filtres();
 remplir_formulaire_ajout();
 remplir_mots_cles_formulaire();
 
-fetch('api_evenements.php')
+fetch("api_evenements.php")
     .then(function(reponse) {
         return reponse.json();
     })
     .then(function(donnees) {
-        donnees.forEach(function(ev) {
-            evenements.push(ev);
+        evenements.length = 0;
+
+        donnees.forEach(function(evenement) {
+            evenements.push(normaliser_evenement(evenement));
         });
+
+        afficher_evenements(evenements);
+    })
+    .catch(function() {
         afficher_evenements(evenements);
     });
 
@@ -393,16 +456,19 @@ document.getElementById("public").addEventListener("change", filtrer_evenements)
 document.getElementById("tri").addEventListener("change", filtrer_evenements);
 
 const bouton_ajouter = document.getElementById("bouton-ajouter-evenement");
+
 if (bouton_ajouter) {
     bouton_ajouter.addEventListener("click", ouvrir_formulaire_ajout);
 }
 
 const bouton_annuler = document.getElementById("bouton-annuler-ajout");
+
 if (bouton_annuler) {
     bouton_annuler.addEventListener("click", fermer_formulaire_ajout);
 }
 
 const formulaire_ajout = document.getElementById("formulaire-ajout-evenement");
+
 if (formulaire_ajout) {
     formulaire_ajout.addEventListener("submit", ajouter_evenement);
 }

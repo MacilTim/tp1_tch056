@@ -97,18 +97,3 @@ INSERT INTO evenements (titre, image_url, description_courte, description_longue
                                                                                                                                                                                         ('Activité familiale au Cosmodôme', 'https://res.cloudinary.com/dqmiqekxl/image/upload/w_1200,h_630,c_auto,f_auto/photos_600_400/cosmodome_1', 'Activité éducative et interactive pour les familles autour de l\'espace, des sciences et de l\'exploration.', 'Le Cosmodôme propose une activité éducative et interactive autour de l\'espace. Les familles peuvent découvrir les sciences, les missions spatiales et l\'exploration de façon amusante.', '2026-07-22 13:00:00', 'Cosmodôme', '2150 Autoroute des Laurentides, Laval', 2, 5, 2, 20.00, TRUE, NULL),
                                                                                                                                                                                         ('Concert extérieur à Longueuil', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN7CIJJ5tyGwHuLoxgSSExtq-APoRqiBORmg&s', 'Concert en plein air réunissant des artistes locaux dans une ambiance conviviale et familiale.', 'Ce concert extérieur à Longueuil rassemble des artistes locaux dans un parc. L\'événement se déroule dans une ambiance conviviale et convient aux familles.', '2026-08-18 18:30:00', 'Parc Michel-Chartrand', '1895 Rue Adoncour, Longueuil', 3, 1, 2, 0.00, FALSE, NULL);
 
--- Mots-clés des événements
-INSERT INTO evenements_mots_cles (evenement_id, mot_cle_id) VALUES
-(1, 1), (1, 2), (1, 3), (1, 4), (1, 5),
-(2, 2), (2, 3), (2, 4), (2, 5),
-(3, 4), (3, 5), (3, 9),
-(4, 5), (4, 6),
-(5, 5), (5, 6),
-(6, 5), (6, 7),
-(7, 5), (7, 6),
-(8, 8), (8, 10),
-(9, 2), (9, 3), (9, 8);
-
--- Compte admin de test
--- Génère le hash dans un fichier PHP séparé (voir generer_admin.php), puis copie-colle la valeur ici.
--- Ou crée ton compte via nouveau_compte.php et change le type_usager à 'admin' directement dans la BD.
