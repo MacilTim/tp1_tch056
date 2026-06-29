@@ -1,31 +1,3 @@
-function normaliser_evenement(evenement) {
-    evenement.id = Number(evenement.id);
-    evenement.ville_id = Number(evenement.ville_id);
-    evenement.categorie_id = Number(evenement.categorie_id);
-    evenement.public_id = Number(evenement.public_id);
-    evenement.prix = Number(evenement.prix);
-
-    if (evenement.lien_externe === null) {
-        evenement.lien_externe = "";
-    }
-
-    if (!Array.isArray(evenement.mots_cles_ids)) {
-        evenement.mots_cles_ids = [];
-    }
-
-    evenement.mots_cles_ids = evenement.mots_cles_ids.map(function(id) {
-        return Number(id);
-    });
-
-    return evenement;
-}
-
-function trouver_evenement(id) {
-    return evenements.find(function(evenement) {
-        return evenement.id === id;
-    });
-}
-
 function trouver_categorie(categorie_id) {
     return categories.find(function(categorie) {
         return categorie.id === categorie_id;
@@ -48,6 +20,27 @@ function trouver_mot_cle(mot_cle_id) {
     return mots_cles.find(function(mot_cle) {
         return mot_cle.id === mot_cle_id;
     });
+}
+
+function gerer_erreur_requete(reponse) {
+    if (!reponse.ok) {
+        return reponse.json().then(function(erreur) {
+            throw erreur;
+        });
+    }
+
+    return reponse.json();
+}
+
+function afficher_message_erreur(erreur) {
+    const contenu = document.querySelector(".detail-evenement");
+
+    if (erreur && erreur.erreur) {
+        contenu.innerHTML = "<h2>Erreur</h2><p>" + erreur.erreur + "</p>";
+        return;
+    }
+
+    contenu.innerHTML = "<h2>Erreur</h2><p>Une erreur est survenue pendant la requête.</p>";
 }
 
 function afficher_mots_cles(evenement) {
@@ -91,18 +84,10 @@ function afficher_details_evenement(evenement) {
     }
 }
 
-function afficher_evenements_similaires(evenement) {
+function afficher_evenements_similaires(evenements_similaires) {
     const conteneur = document.getElementById("liste-evenements-similaires");
 
     conteneur.innerHTML = "";
-
-    const evenements_similaires = evenements.filter(function(evenement_item) {
-        return evenement_item.id !== evenement.id &&
-            (
-                evenement_item.categorie_id === evenement.categorie_id ||
-                evenement_item.ville_id === evenement.ville_id
-            );
-    });
 
     evenements_similaires.forEach(function(evenement_similaire) {
         const carte = document.createElement("article");
@@ -152,41 +137,43 @@ function afficher_evenement(evenement) {
 
     afficher_details_evenement(evenement);
     afficher_mots_cles(evenement);
-    afficher_evenements_similaires(evenement);
 }
 
-function afficher_evenement_introuvable() {
-    const contenu = document.querySelector(".detail-evenement");
+function charger_evenement(id) {
+    fetch("/api/evenements/" + id)
+        .then(gerer_erreur_requete)
+        .then(function(evenement) {
+            afficher_evenement(evenement);
+        })
+        .catch(function(erreur) {
+            afficher_message_erreur(erreur);
+        });
+}
 
-    contenu.innerHTML = "<h2>Événement introuvable</h2><p>Aucun événement ne correspond à cet identifiant.</p>";
+function charger_evenements_similaires(id) {
+    fetch("/api/evenements/" + id + "/similaires")
+        .then(gerer_erreur_requete)
+        .then(function(evenements_similaires) {
+            afficher_evenements_similaires(evenements_similaires);
+        })
+        .catch(function() {
+            afficher_evenements_similaires([]);
+        });
 }
 
 function charger_page_evenement() {
     const parametres = new URLSearchParams(window.location.search);
     const id = Number(parametres.get("id"));
 
-    fetch("api_evenements.php")
-        .then(function(reponse) {
-            return reponse.json();
-        })
-        .then(function(donnees) {
-            evenements.length = 0;
-
-            donnees.forEach(function(evenement) {
-                evenements.push(normaliser_evenement(evenement));
-            });
-
-            const evenement = trouver_evenement(id);
-
-            if (evenement) {
-                afficher_evenement(evenement);
-            } else {
-                afficher_evenement_introuvable();
-            }
-        })
-        .catch(function() {
-            afficher_evenement_introuvable();
+    if (!id) {
+        afficher_message_erreur({
+            erreur: "Aucun identifiant d'événement n'a été fourni."
         });
+        return;
+    }
+
+    charger_evenement(id);
+    charger_evenements_similaires(id);
 }
 
 charger_page_evenement();

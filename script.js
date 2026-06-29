@@ -1,43 +1,5 @@
 let evenement_en_modification_id = null;
 
-function normaliser_evenement(evenement) {
-    if (evenement.date_evenement && !evenement.date) {
-        const parties = evenement.date_evenement.split(" ");
-
-        evenement.date = parties[0];
-
-        if (parties[1]) {
-            evenement.heure = parties[1].substring(0, 5);
-        } else {
-            evenement.heure = "";
-        }
-    }
-
-    if (!evenement.heure) {
-        evenement.heure = "";
-    }
-
-    if (evenement.lien_externe === null) {
-        evenement.lien_externe = "";
-    }
-
-    evenement.id = Number(evenement.id);
-    evenement.ville_id = Number(evenement.ville_id);
-    evenement.categorie_id = Number(evenement.categorie_id);
-    evenement.public_id = Number(evenement.public_id);
-    evenement.prix = Number(evenement.prix);
-
-    if (!Array.isArray(evenement.mots_cles_ids)) {
-        evenement.mots_cles_ids = [];
-    }
-
-    evenement.mots_cles_ids = evenement.mots_cles_ids.map(function(id) {
-        return Number(id);
-    });
-
-    return evenement;
-}
-
 function trouver_categorie(categorie_id) {
     return categories.find(function(categorie) {
         return categorie.id === categorie_id;
@@ -54,6 +16,30 @@ function trouver_public(public_id) {
     return publics.find(function(public_item) {
         return public_item.id === public_id;
     });
+}
+
+function gerer_erreur_requete(reponse) {
+    if (!reponse.ok) {
+        return reponse.json().then(function(erreur) {
+            throw erreur;
+        });
+    }
+
+    return reponse.json();
+}
+
+function afficher_message_erreur(erreur) {
+    if (erreur && erreur.erreur) {
+        alert(erreur.erreur);
+        return;
+    }
+
+    if (erreur && erreur.erreurs) {
+        alert(erreur.erreurs.join("\n"));
+        return;
+    }
+
+    alert("Une erreur est survenue pendant la requête.");
 }
 
 function afficher_evenement_resume(evenement) {
@@ -180,45 +166,58 @@ function afficher_filtres() {
     remplir_select("public", "Tous les publics", publics);
 }
 
+function construire_url_evenements() {
+    const parametres = new URLSearchParams();
+
+    const categorie = document.getElementById("categorie").value;
+    const ville = document.getElementById("ville").value;
+    const public_vise = document.getElementById("public").value;
+    const tri = document.getElementById("tri").value;
+
+    if (categorie !== "") {
+        parametres.append("categorie", categorie);
+    }
+
+    if (ville !== "") {
+        parametres.append("ville", ville);
+    }
+
+    if (public_vise !== "") {
+        parametres.append("public", public_vise);
+    }
+
+    if (tri !== "") {
+        parametres.append("tri", tri);
+    }
+
+    const requete = parametres.toString();
+
+    if (requete === "") {
+        return "/api/evenements";
+    }
+
+    return "/api/evenements?" + requete;
+}
+
+function charger_evenements() {
+    fetch(construire_url_evenements())
+        .then(gerer_erreur_requete)
+        .then(function(donnees) {
+            evenements.length = 0;
+
+            donnees.forEach(function(evenement) {
+                evenements.push(evenement);
+            });
+
+            afficher_evenements(evenements);
+        })
+        .catch(function(erreur) {
+            afficher_message_erreur(erreur);
+        });
+}
+
 function filtrer_evenements() {
-    const categorie_selectionnee = document.getElementById("categorie").value;
-    const ville_selectionnee = document.getElementById("ville").value;
-    const public_selectionne = document.getElementById("public").value;
-    const tri_selectionne = document.getElementById("tri").value;
-
-    let evenements_filtres = evenements.slice();
-
-    if (categorie_selectionnee !== "") {
-        evenements_filtres = evenements_filtres.filter(function(evenement) {
-            return evenement.categorie_id === Number(categorie_selectionnee);
-        });
-    }
-
-    if (ville_selectionnee !== "") {
-        evenements_filtres = evenements_filtres.filter(function(evenement) {
-            return evenement.ville_id === Number(ville_selectionnee);
-        });
-    }
-
-    if (public_selectionne !== "") {
-        evenements_filtres = evenements_filtres.filter(function(evenement) {
-            return evenement.public_id === Number(public_selectionne);
-        });
-    }
-
-    if (tri_selectionne === "date") {
-        evenements_filtres.sort(function(a, b) {
-            return new Date(a.date + "T" + a.heure) - new Date(b.date + "T" + b.heure);
-        });
-    }
-
-    if (tri_selectionne === "prix") {
-        evenements_filtres.sort(function(a, b) {
-            return a.prix - b.prix;
-        });
-    }
-
-    afficher_evenements(evenements_filtres);
+    charger_evenements();
 }
 
 function ouvrir_formulaire_ajout() {
@@ -268,91 +267,55 @@ function remplir_formulaire_ajout() {
     remplir_select("public-ajout", "Choisir un public", publics);
 }
 
+function lire_donnees_formulaire() {
+    return {
+        titre: document.getElementById("titre-ajout").value.trim(),
+        image: document.getElementById("image-ajout").value.trim(),
+        description_courte: document.getElementById("description-courte-ajout").value.trim(),
+        description_longue: document.getElementById("description-longue-ajout").value.trim(),
+        date: document.getElementById("date-ajout").value,
+        heure: document.getElementById("heure-ajout").value,
+        lieu: document.getElementById("lieu-ajout").value.trim(),
+        adresse: document.getElementById("adresse-ajout").value.trim(),
+        ville_id: Number(document.getElementById("ville-ajout").value),
+        categorie_id: Number(document.getElementById("categorie-ajout").value),
+        public_id: Number(document.getElementById("public-ajout").value),
+        prix: Number(document.getElementById("prix-ajout").value),
+        lien_externe: document.getElementById("lien-ajout").value.trim(),
+        mots_cles_ids: Array.from(document.querySelectorAll("input[name='mots-cles-ajout']:checked")).map(function(case_mot_cle) {
+            return Number(case_mot_cle.value);
+        })
+    };
+}
+
 function ajouter_evenement(event) {
     event.preventDefault();
 
-    const titre = document.getElementById("titre-ajout").value.trim();
-    const image = document.getElementById("image-ajout").value.trim();
-    const description_courte = document.getElementById("description-courte-ajout").value.trim();
-    const description_longue = document.getElementById("description-longue-ajout").value.trim();
-    const date = document.getElementById("date-ajout").value;
-    const heure = document.getElementById("heure-ajout").value;
-    const lieu = document.getElementById("lieu-ajout").value.trim();
-    const adresse = document.getElementById("adresse-ajout").value.trim();
-    const ville_id = Number(document.getElementById("ville-ajout").value);
-    const categorie_id = Number(document.getElementById("categorie-ajout").value);
-    const public_id = Number(document.getElementById("public-ajout").value);
-    const prix = Number(document.getElementById("prix-ajout").value);
-    const lien_externe = document.getElementById("lien-ajout").value.trim();
+    const donnees = lire_donnees_formulaire();
 
-    const mots_cles_ids = Array.from(document.querySelectorAll("input[name='mots-cles-ajout']:checked")).map(function(case_mot_cle) {
-        return Number(case_mot_cle.value);
-    });
-
-    if (
-        titre === "" ||
-        image === "" ||
-        description_courte === "" ||
-        description_longue === "" ||
-        date === "" ||
-        heure === "" ||
-        lieu === "" ||
-        adresse === "" ||
-        ville_id === 0 ||
-        categorie_id === 0 ||
-        public_id === 0 ||
-        prix < 0 ||
-        mots_cles_ids.length === 0
-    ) {
-        alert("Veuillez remplir correctement tous les champs obligatoires.");
-        return;
-    }
+    let url = "/api/evenements";
+    let methode = "POST";
 
     if (evenement_en_modification_id !== null) {
-        const evenement = evenements.find(function(evenement_item) {
-            return evenement_item.id === evenement_en_modification_id;
-        });
-
-        if (evenement) {
-            evenement.titre = titre;
-            evenement.image = image;
-            evenement.description_courte = description_courte;
-            evenement.description_longue = description_longue;
-            evenement.date = date;
-            evenement.heure = heure;
-            evenement.lieu = lieu;
-            evenement.adresse = adresse;
-            evenement.ville_id = ville_id;
-            evenement.categorie_id = categorie_id;
-            evenement.public_id = public_id;
-            evenement.prix = prix;
-            evenement.mots_cles_ids = mots_cles_ids;
-            evenement.lien_externe = lien_externe;
-        }
-    } else {
-        const nouvel_evenement = {
-            id: Date.now(),
-            titre: titre,
-            image: image,
-            description_courte: description_courte,
-            description_longue: description_longue,
-            date: date,
-            heure: heure,
-            lieu: lieu,
-            adresse: adresse,
-            ville_id: ville_id,
-            categorie_id: categorie_id,
-            public_id: public_id,
-            prix: prix,
-            mots_cles_ids: mots_cles_ids,
-            lien_externe: lien_externe
-        };
-
-        evenements.push(nouvel_evenement);
+        url = "/api/evenements/" + evenement_en_modification_id;
+        methode = "PUT";
     }
 
-    fermer_formulaire_ajout();
-    filtrer_evenements();
+    fetch(url, {
+        method: methode,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(donnees)
+    })
+        .then(gerer_erreur_requete)
+        .then(function() {
+            fermer_formulaire_ajout();
+            charger_evenements();
+        })
+        .catch(function(erreur) {
+            afficher_message_erreur(erreur);
+        });
 }
 
 function ouvrir_formulaire_modification(id) {
@@ -395,14 +358,16 @@ function supprimer_evenement(id) {
         return;
     }
 
-    const index = evenements.findIndex(function(evenement) {
-        return evenement.id === id;
-    });
-
-    if (index !== -1) {
-        evenements.splice(index, 1);
-        filtrer_evenements();
-    }
+    fetch("/api/evenements/" + id, {
+        method: "DELETE"
+    })
+        .then(gerer_erreur_requete)
+        .then(function() {
+            charger_evenements();
+        })
+        .catch(function(erreur) {
+            afficher_message_erreur(erreur);
+        });
 }
 
 function remplir_mots_cles_formulaire() {
@@ -432,23 +397,7 @@ function remplir_mots_cles_formulaire() {
 afficher_filtres();
 remplir_formulaire_ajout();
 remplir_mots_cles_formulaire();
-
-fetch("api_evenements.php")
-    .then(function(reponse) {
-        return reponse.json();
-    })
-    .then(function(donnees) {
-        evenements.length = 0;
-
-        donnees.forEach(function(evenement) {
-            evenements.push(normaliser_evenement(evenement));
-        });
-
-        afficher_evenements(evenements);
-    })
-    .catch(function() {
-        afficher_evenements(evenements);
-    });
+charger_evenements();
 
 document.getElementById("categorie").addEventListener("change", filtrer_evenements);
 document.getElementById("ville").addEventListener("change", filtrer_evenements);
